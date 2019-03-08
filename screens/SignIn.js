@@ -3,7 +3,7 @@ import {Text } from 'react-native';
 
 export default class SignIn extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'Sign In',
   };
 
   render() {

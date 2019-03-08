@@ -10,15 +10,11 @@ import {
   Button,
   ImageBackground
 } from 'react-native';
-import { WebBrowser } from 'expo';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
-import SignUp from './SignUp'
-import SignIn from './SignIn'
 
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'Hootini'
   };
 
   render() {
@@ -52,6 +48,8 @@ export default class HomeScreen extends React.Component {
   }
 
 }
+
+
 
 
 

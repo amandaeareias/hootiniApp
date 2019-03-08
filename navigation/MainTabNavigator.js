@@ -6,6 +6,48 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import SignUpScreen from '../screens/SignUp';
+import SignInScreen from '../screens/SignIn';
+
+
+const SignInStack = createStackNavigator({
+  Home: SignInScreen,
+});
+
+SignInStack.navigationOptions = {
+  tabBarLabel: 'Sign In',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
+
+
+const SignUpStack = createStackNavigator({
+  Home: SignUpScreen,
+});
+
+SignUpStack.navigationOptions = {
+  tabBarLabel: 'Sign Up',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -57,4 +99,6 @@ export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+  SignUpStack,
+  SignInStack
 });

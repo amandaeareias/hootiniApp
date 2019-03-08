@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text } from 'react-native';
+import { Text } from 'react-native';
 
 export default class SignUp extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'Sign Up',
   };
 
   render() {
