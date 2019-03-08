@@ -11,7 +11,6 @@ import {
   ImageBackground
 } from 'react-native';
 
-
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Hootini'

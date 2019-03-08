@@ -9,7 +9,6 @@ import SettingsScreen from '../screens/SettingsScreen';
 import SignUpScreen from '../screens/SignUp';
 import SignInScreen from '../screens/SignIn';
 
-
 const SignInStack = createStackNavigator({
   Home: SignInScreen,
 });
@@ -27,8 +26,6 @@ SignInStack.navigationOptions = {
     />
   ),
 };
-
-
 
 const SignUpStack = createStackNavigator({
   Home: SignUpScreen,
