@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19002,
+  "devToolsPort": 19003,
   "expoServerPort": 19000,
-  "packagerPort": 19003,
-  "packagerPid": 31650,
+  "packagerPort": 19004,
+  "packagerPid": 34539,
   "expoServerNgrokUrl": "https://nz-ai9.anonymous.hootiniapp.exp.direct",
   "packagerNgrokUrl": "https://packager.nz-ai9.anonymous.hootiniapp.exp.direct",
-  "ngrokPid": 31670
+  "ngrokPid": 34560
 }
