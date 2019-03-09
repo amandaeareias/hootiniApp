@@ -58,7 +58,7 @@ class Deck extends Component {
                   <Text>
                   {deck.name}
                   </Text>
-                  <Button title="Add New Note" onPress={()=> console.log('add new note button pressed')}/>
+                  <Button title="Add New Note" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck})}/>
                 </ScrollView>
                 } else {
                   return <Text>Loading Cards...</Text>
