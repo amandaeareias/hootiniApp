@@ -96,7 +96,7 @@ export default class Decks extends Component {
                 {({ data }) => {
                   if (data.allDecks && data.allDecks.length > 0) {
                     console.log('you have decks')
-                    return <DeckList decks={data.allDecks} />
+                    return <DeckList decks={data.allDecks} navigate={this.props.navigation.navigate}/>
                   } else {
                     console.log('you have no decks')
                     return <Text> Start your first deck! </Text>

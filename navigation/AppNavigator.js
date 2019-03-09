@@ -5,6 +5,8 @@ import SignUp from '../screens/SignUp';
 import SignIn from '../screens/SignIn';
 import HomeScreen from '../screens/HomeScreen';
 import Decks from '../screens/Decks';
+import Deck from '../screens/Deck';
+import DeckList from '../components/DeckList';
 
 export default createAppContainer(createStackNavigator({
   // You could add another route here for authentication.
@@ -13,8 +15,11 @@ export default createAppContainer(createStackNavigator({
   SignUp: { screen: SignUp },
   SignIn: { screen: SignIn },
   Home: { screen: HomeScreen },
+  Deck: { screen: Deck },
   Decks: { screen: Decks },
-  headerMode: 'screen'
+  DeckList: { screen: DeckList},
+  initialRouteName: 'Home'
+  // headerMode: 'screen'
 }));
 
 

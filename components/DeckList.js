@@ -7,7 +7,7 @@ export default class DeckList extends React.Component {
   render() {
     return (
       <ScrollView>
-        {this.props.decks.map(deck => <Text>{deck.name}</Text>)}
+        {this.props.decks.map(deck => <Text slug={deck.slug} onPress={() => this.props.navigate('Deck', {slug: deck.slug})} key={deck.slug} style={{margin: 10, fontSize: 20, padding: 10, backgroundColor: '#DEDEDE'}}>{deck.name}</Text>)}
       </ScrollView>
     )
   }
