@@ -45,6 +45,17 @@ class Deck extends Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      toggleCardBack: false
+    }
+  }
+
+  cardFlip = () => {
+    this.setState({toggleCardBack: !this.state.toggleCardBack}, () => console.log('card flipped'))
+  }
+
     render() {
       const slug = this.props.navigation.getParam('slug');
 
@@ -67,7 +78,6 @@ class Deck extends Component {
                 }
                 
                 if(deck) {
-                  console.log('deck: ', deck)
                 return <ScrollView>
                   <Text>Total: {deck.cardsTotal}</Text><Text>Due: {deck.cardsTotal}</Text>
                   <Text>
@@ -87,9 +97,13 @@ class Deck extends Component {
                       const { allCards } = data;
 
                       const cards = allCards.map(note => {
-                        console.log(note);
-                        return <Text key={note.id} style={{margin: 10, width: 50, height: 50, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>{note.fields[0].value}</Text>;
+                        if (this.state.toggleCardBack) {
+                          return <Text onPress={this.cardFlip} key={note.id} style={{margin: 10, width: 50, height: 50, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>{note.fields[0].value}</Text>;
+                        } else {
+                          return <Text onPress={this.cardFlip} key={note.id} style={{margin: 10, width: 50, height: 50, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>{note.fields[1].value}</Text>;
+                        }
                       });
+
                       return cards;
                     }}
                   </Query>
