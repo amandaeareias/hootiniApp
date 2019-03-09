@@ -62,19 +62,14 @@ export default class Decks extends Component {
   handleSubmit = async (createDeck) => {
     console.log('name of hte deck', this.state.newDeckName)
     this.setState({ dialogOpen: !this.state.dialogOpen }, () => console.log('submit handled'));
-    const {
-      data: {
-        createDeck: { slug }
-      }
-    } = await createDeck({ variables: this.state.newDeckName });
-    // Wait until the refetch finishes and go to new deck's page
-    // await wait();
-    // navigate(`/deck/${slug}`);
+
+    await createDeck({ variables: { name: this.state.newDeckName } }).then(data => console.log('promise data: ', data));
   };
 
   render() {
     return (
       <View>
+        <Button onPress={this.toggleDialog} title="Create Deck" />
 
         <Modal visible={this.state.dialogOpen}
           onRequestClose={this.toggleDialog}
@@ -93,13 +88,15 @@ export default class Decks extends Component {
         </Modal>
 
         <User>
-          {({ data, loading }) => {
-            if (data && data.me) {
+          {({ data: res }) => {
+
+            if (res && res.me) {
               return <Query query={ALL_DECKS_QUERY}>
+
                 {({ data }) => {
-                  if (data.length > 0) {
+                  if (data.allDecks && data.allDecks.length > 0) {
                     console.log('you have decks')
-                    return <DeckList decks={data} />
+                    return <DeckList decks={data.allDecks} />
                   } else {
                     console.log('you have no decks')
                     return <Text> Start your first deck! </Text>
@@ -109,7 +106,6 @@ export default class Decks extends Component {
             }
           }}
         </User>
-        <Button onPress={this.toggleDialog} title="Create Deck" />
       </View>
     )
   }

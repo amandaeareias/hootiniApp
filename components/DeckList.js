@@ -1,17 +1,14 @@
 import React from 'react';
-import { Text, Button, View, FlatList } from 'react-native';
+import { Text, Button, View, FlatList, ScrollView } from 'react-native';
 
 
-export default class SettingsScreen extends React.Component {
+export default class DeckList extends React.Component {
 
   render() {
     return (
-      <FlatList>
-        {decks.map(deck => {
-          console.log('deck:', deck)
-          return (<Text>{deck}</Text>)
-        })}
-      </FlatList>
+      <ScrollView>
+        {this.props.decks.map(deck => <Text>{deck.name}</Text>)}
+      </ScrollView>
     )
   }
 }
