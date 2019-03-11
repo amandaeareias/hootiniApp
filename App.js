@@ -9,12 +9,20 @@ const client = new ApolloClient({
   uri: 'http://192.168.1.166:3001/graphql',
   // uri: 'http://192.168.1.231:3001/graphql',
   credentials: 'include',
-  defaultOptions: {
-    query: {
-      fetchPolicy: 'network-only'
-    }
-  }
 });
+client.defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'all',
+  },
+  mutate: {
+    errorPolicy: 'all'
+  }
+};
 
 export default class App extends React.Component {
   state = {

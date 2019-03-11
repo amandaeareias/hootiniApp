@@ -35,10 +35,8 @@ class AddNote extends Component {
       deck: this.state.deck
     }
     await createNote({ variables });
-    setTimeout(()=> {
-      this.props.navigation.state.params.reloadComponent()
-      this.props.navigation.navigate('Deck', { deck: this.state.deck });
-    },5000)
+    this.props.navigation.navigate('Deck', { deck: this.state.deck });
+    this.props.navigation.state.params.refetchParent();
   }
 
   constructor(props) {
@@ -55,7 +53,7 @@ class AddNote extends Component {
     return (
       <View>
 
-        <Mutation mutation={CREATE_NOTE_MUTATION}>
+        <Mutation mutation={CREATE_NOTE_MUTATION} fetchPolicy="no-cache">
 
           {(createNote) => {
             return <View>

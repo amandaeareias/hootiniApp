@@ -63,6 +63,7 @@ export class Deck extends Component {
     }
   }
 
+
   reloadComponent = () => {
     this.setState({dummyState: this.state.dummyState + 1}, () => console.log(this.state.dummyState))
     // this.props.navigation.setParams({ dueCards: 0 });
@@ -80,10 +81,11 @@ export class Deck extends Component {
       return (
         <User>
           {({data}) => {
-            
+            console.log(data);
             if (data && data.me) {
-            return <Query query={DECK_QUERY} variables={{ slug }}>
-              {( {data, loading, error} )  => {
+              return <Query query={DECK_QUERY} variables={{ slug }}>
+              {( {data, loading, error, refetch} )  => {
+                
                 const { deck } = data;
                 console.log(data);
                
@@ -108,13 +110,14 @@ export class Deck extends Component {
 
                   <ScrollView>
 
-                  <Button title="Add New Note" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, reloadComponent: this.reloadComponent})}/>
+                  <Button title="Add New Note" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, reloadComponent: this.reloadComponent, refetchParent: refetch})}/>
 
                   {reviewButton}
                    
                   <Query query={DUE_CARDS_QUERY} variables={{ deckSlug: slug, when: new Date().setFullYear(new Date().getFullYear() + 1)}}>
-                    {({ data, error, loading }) => {
+                    {({ data, error, loading, refetch }) => {
                       if (loading) {
+                        refetch()
                         return <Text>Loading...</Text>
                       }
                       if (error) {
@@ -153,6 +156,8 @@ export class Deck extends Component {
               }
               }
               </Query>
+            } else {
+              return <Text>Loading Cards...</Text>
             }
           }}
         </User>

@@ -88,9 +88,9 @@ export default class Decks extends Component {
         </Modal>
 
         <User>
-          {({ data: res }) => {
+          {({ data }) => {
 
-            if (res && res.me) {
+            if (data && data.me) {
               return <Query query={ALL_DECKS_QUERY}>
 
                 {({ data }) => {
@@ -103,6 +103,8 @@ export default class Decks extends Component {
                   }
                 }}
               </Query>
+            } else {
+              return <Text>Loading…</Text>
             }
           }}
         </User>
