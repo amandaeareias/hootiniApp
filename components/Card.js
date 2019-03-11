@@ -48,6 +48,7 @@ export default class Card extends Component {
   }
 
   back = () => {
+    this.props.refetchParent();
     this.props.navigation.navigate('Deck', { deck: this.props.slug });
   }
 
@@ -88,6 +89,8 @@ export default class Card extends Component {
         {({ data }) => {
           if (data && data.me) {
             return <View>{cardView}</View>
+          } else {
+            return <Text>There was an error</Text>
           }
         }}
       </User>

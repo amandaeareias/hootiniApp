@@ -36,7 +36,7 @@ export default class Review extends Component {
               }
               const { allCards } = data;
 
-              return <Card cards={allCards} slug={slug} navigation={this.props.navigation}></Card>
+              return <Card cards={allCards} slug={slug} refetchParent={this.props.navigation.state.params.refetchParent} navigation={this.props.navigation}></Card>
             }}
           </Query>
         }}

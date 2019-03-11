@@ -37,6 +37,14 @@ export const DUE_CARDS_QUERY = gql`
   }
 `;
 
+const DELETE_NOTE_MUTATION = gql`
+  mutation deleteNote($id: ID!) {
+    deleteNote(data: { id: $id }) {
+      id
+    }
+  }
+`;
+
 
 export class Deck extends Component {
 
@@ -75,6 +83,13 @@ export class Deck extends Component {
     // problem - all cards are getting flipped at once. two ways to solve - only show front side, or change the value of each card clicked
   }
 
+  deleteNote = async(deleteNote, note) => {
+    console.log('note to delete', note);
+    // await deleteNote({id: note.id, deck: note.deck})
+    await deleteNote({ variables: {id:  "5c83e3a19606589a9c7406bc"}})
+    console.log('note deleted');
+  }
+
     render() {
       const slug = this.props.navigation.getParam('slug');
 
@@ -99,7 +114,7 @@ export class Deck extends Component {
                 if(deck) {
                   let reviewButton;
                   if (deck.cardsDue > 0) {
-                    reviewButton = <Button title="Start Review" onPress={() => this.props.navigation.navigate('Review', {slug: this.props.navigation.getParam('slug')})} />
+                    reviewButton = <Button title="Start Review" onPress={() => this.props.navigation.navigate('Review', {slug: this.props.navigation.getParam('slug'), refetchParent: refetch})} />
                   }
                 
                 return <ScrollView>
@@ -109,7 +124,7 @@ export class Deck extends Component {
                   </Text>
 
                   <ScrollView>
-
+                 
                   <Button title="Add New Note" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, reloadComponent: this.reloadComponent, refetchParent: refetch})}/>
 
                   {reviewButton}
@@ -127,8 +142,13 @@ export class Deck extends Component {
 
                       const cards = allCards.map((note) => {
                          
-                          return <Text key={note.id} style={{margin: 10, width: 100, height: 100, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>{note.fields[0].value}</Text>;
-                        
+                        return <Mutation mutation={DELETE_NOTE_MUTATION}>
+                          {(deleteNote) => {
+                            return <Text key={note.id} onPress={() => this.deleteNote(deleteNote, note)} style={{margin: 10, width: 100, height: 100, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>
+                              {note.fields[0].value}
+                              </Text>
+                            }}
+                          </Mutation>
                       })
 
                       return cards;
