@@ -5,8 +5,9 @@ import SignUp from '../screens/SignUp';
 import SignIn from '../screens/SignIn';
 import HomeScreen from '../screens/HomeScreen';
 import Decks from '../screens/Decks';
-import Deck from '../screens/Deck';
+import {Deck} from '../screens/Deck';
 import AddNote from '../screens/AddNote';
+import Review from '../screens/Review';
 import DeckList from '../components/DeckList';
 
 export default createAppContainer(createStackNavigator({
@@ -20,6 +21,7 @@ export default createAppContainer(createStackNavigator({
   Decks: { screen: Decks },
   AddNote: { screen: AddNote},
   DeckList: { screen: DeckList},
+  Review: { screen: Review},
   initialRouteName: 'Home'
   // headerMode: 'screen'
 }));

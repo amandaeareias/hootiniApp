@@ -64,13 +64,12 @@ export default class SignUp extends React.Component {
           <TextInput onChangeText={(name) => this.setState({name})} value={this.state.name} placeholder="Name" style={{height: 80}}/>
           <TextInput onChangeText={(email) => this.setState({email})} value={this.state.email} placeholder="Email Address" style={{height: 80}}/>
           <TextInput onChangeText={(password) => this.setState({password})} value={this.state.password} placeholder="Password" style={{height: 80}}/>
-          {/* <Button title="sign-up" onPress={() => this.handleSubmit(this.state)}>Sign Up</Button> */}
           <Button title="sign-up" onPress={() => signup({variables: this.state})}>Sign Up</Button>
 
         </View>
 
         )}
-        
+
       </Mutation>
 
       }}
