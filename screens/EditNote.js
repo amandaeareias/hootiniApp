@@ -5,29 +5,23 @@ import gql from 'graphql-tag';
 import User from '../components/User';
 import { Deck } from './Deck';
 
-const CREATE_NOTE_MUTATION = gql`
-  mutation createNote($noteType: ID!, $deck: ID!, $fields: [NoteFieldCreateInput!]!) {
-    createNote(data: { noteType: $noteType, deck: $deck, fields: $fields }) {
-      cardsAdded
-    }
-  }
-`;
-
-const SEARCH_NOTETYPES_QUERY = gql`
-  query allNoteTypes($name: String!) {
-    allNoteTypes(where: { name: $name }) {
+const NOTE_TYPE_QUERY = gql`
+  query noteType($id: ID!) {
+    noteType(where: { id: $id }) {
       id
-      slug
       name
+      fieldDefinitions {
+        key
+        type
+      }
     }
   }
 `;
 
 
-class AddNote extends Component {
+export default class EditNote extends Component {
 
-
-  handleSubmit = async (createNote, noteType) => {
+  handleSubmit = async (noteType) => {
 
     const variables = {
       fields: [{ key: 'Front', value: this.state.front }, { key: 'Back', value: this.state.back }],
@@ -35,10 +29,7 @@ class AddNote extends Component {
       deck: this.state.deck
     }
     await createNote({ variables });
-    setTimeout(()=> {
-      this.props.navigation.state.params.reloadComponent()
-      this.props.navigation.navigate('Deck', { deck: this.state.deck });
-    },5000)
+    this.props.navigation.navigate('Deck', { deck: this.state.deck });
   }
 
   constructor(props) {
@@ -86,4 +77,4 @@ class AddNote extends Component {
 }
 
 
-export default AddNote;
+}

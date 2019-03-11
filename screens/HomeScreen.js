@@ -13,8 +13,8 @@ import {
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Hootini'
-  };
+    header: null
+  }
 
   render() {
     return (

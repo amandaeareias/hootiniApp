@@ -38,7 +38,7 @@ export default class SignUp extends React.Component {
   static navigationOptions = ({navigation}) => {
     return {
       title: 'Sign Up',
-      headerLeft: <Button title="back" onPress={()=> navigation.navigate('Home')}/>
+      headerLeft: <Button title="Back" onPress={()=> navigation.navigate('Home')}/>
     }
   };
 
