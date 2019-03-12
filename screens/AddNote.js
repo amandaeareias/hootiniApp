@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Text, Button, View, ScrollView, Modal, TextInput } from 'react-native';
+import { Text, Button, View, ScrollView, Modal, TextInput, TouchableHighlight } from 'react-native';
 import { Mutation, Query, renderToStringWithData } from 'react-apollo';
 import gql from 'graphql-tag';
 import User from '../components/User';
 import { Deck } from './Deck';
+import styles from './forms.style.js';
 
 const CREATE_NOTE_MUTATION = gql`
   mutation createNote($noteType: ID!, $deck: ID!, $fields: [NoteFieldCreateInput!]!) {
@@ -26,6 +27,9 @@ const SEARCH_NOTETYPES_QUERY = gql`
 
 class AddNote extends Component {
 
+  static navigationOptions = {
+    title: 'Add Note'
+  }
 
   handleSubmit = async (createNote, noteType) => {
 
@@ -56,10 +60,11 @@ class AddNote extends Component {
         <Mutation mutation={CREATE_NOTE_MUTATION} fetchPolicy="no-cache">
 
           {(createNote) => {
-            return <View>
-              <Text>Deck Name: {deck.name}</Text>
-              <TextInput onChangeText={(front) => this.setState({ front })} value={this.state.front} placeholder="Note Front" style={{ height: 200 }} />
-              <TextInput onChangeText={(back) => this.setState({ back })} value={this.state.back} placeholder="Note Back" style={{ height: 200 }} />
+            return <View style={styles.container}>
+              <Text style={styles.FormHeaderLabel}>Deck Name:</Text>
+              <Text style={styles.FormHeader}>{deck.name}</Text>
+              <Text style={styles.InputLabel}>Front</Text><TextInput blurOnSubmit={true} multiline={true} style={styles.NoteFormInput} onChangeText={(front) => this.setState({ front })} value={this.state.front} />
+              <Text style={styles.InputLabel}>Back</Text><TextInput blurOnSubmit={true} multiline={true} style={styles.NoteFormInput} onChangeText={(back) => this.setState({ back })} value={this.state.back} />
 
               <Query query={SEARCH_NOTETYPES_QUERY} variables={{ name: "Basic" }}>
                 {({ loading, error, data: { allNoteTypes = [] } = {} }) => {
@@ -69,7 +74,7 @@ class AddNote extends Component {
                   if (error) {
                     return <Text>Error! {error.message}</Text>
                   }
-                  return <Button title="save-note" onPress={() => this.handleSubmit(createNote, allNoteTypes[0].id)} />
+                  return <TouchableHighlight style={styles.ButtonStyle}><Button title="Save Note" color="white" onPress={() => this.handleSubmit(createNote, allNoteTypes[0].id)} /></TouchableHighlight>
                 }}
               </Query>
 

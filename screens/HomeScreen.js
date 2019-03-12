@@ -6,10 +6,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
   View,
   Button,
   ImageBackground
 } from 'react-native';
+
+import styles from './homescreen.style.js';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -18,11 +21,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <ImageBackground source={require('../assets/images/doodles.png')} style={{ width: '100%', height: '100%', resizeMode: 'repeat' }}>
-        <Image source={require('../assets/images/logo.png')} style={{
-          marginTop: 30,
-          marginLeft: 30
-        }} />
+      <ImageBackground source={require('../assets/images/doodles.png')} style={styles.BackgroundImage}>
         <View style={{
           flex: 1,
           flexDirection: 'column',
@@ -30,16 +29,19 @@ export default class HomeScreen extends React.Component {
           justifyContent: 'center'
         }}
         >
-          <Text>Remember anything, forever.</Text>
-          <Button
-            onPress={() => this.props.navigation.navigate('SignUp')}
-            title="GET STARTED FOR FREE"
-            color="#841584"
-          />
+          <Image source={require('../assets/images/logo.png')} style={styles.Image} />
+          <Text style={styles.tagline}>Remember anything, forever.</Text>
+          <TouchableHighlight style={styles.ButtonStyle}>
+            <Button
+              onPress={() => this.props.navigation.navigate('SignUp')}
+              title="GET STARTED FOR FREE"
+              color="white"
+            />
+          </TouchableHighlight>
           <Button
             onPress={() => this.props.navigation.navigate('SignIn')}
             title="I ALREADY HAVE AN ACCOUNT"
-            color="#841584"
+            color="rgb(3, 30, 94)"
           />
         </View>
       </ImageBackground>

@@ -21,9 +21,8 @@ export default createAppContainer(createStackNavigator({
   Decks: { screen: Decks },
   AddNote: { screen: AddNote},
   DeckList: { screen: DeckList},
-  Review: { screen: Review},
-  initialRouteName: 'Home'
-  // headerMode: 'screen'
+  Review: { screen: Review },
+  initialRouteName: 'Home',
 }));
 
 

@@ -1,8 +1,9 @@
 import React from 'react';
-import { TextInput, Button, View } from 'react-native';
+import { TextInput, Button, View, TouchableHighlight } from 'react-native';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 import User from '../components/User'
+import styles from './forms.style.js';
 
 const CURRENT_USER_QUERY = gql`
   query me {
@@ -51,10 +52,12 @@ export default class SignIn extends React.Component {
           }
           return <Mutation mutation={SIGNIN_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
             {(signin) => (
-              <View>
-                <TextInput onChangeText={(email) => this.setState({ email })} value={this.state.email} placeholder="Email Address" style={{ height: 80 }} />
-                <TextInput onChangeText={(password) => this.setState({ password })} value={this.state.password} placeholder="Password" style={{ height: 80 }} />
-                <Button title="sign-in" onPress={() => signin({ variables: this.state })}>Sign In</Button>
+              <View style={styles.container}>
+                <TextInput style={styles.TextInput} onChangeText={(email) => this.setState({ email })} value={this.state.email} placeholder="Email Address"  />
+                <TextInput style={styles.TextInput} secureTextEntry={true} onChangeText={(password) => this.setState({ password })} value={this.state.password} placeholder="Password"  />
+                <TouchableHighlight style={styles.ButtonStyle}>
+                  <Button color="white" title="Sign In" onPress={() => signin({ variables: this.state })}>Sign In</Button>
+                </TouchableHighlight>
               </View>
             )}
           </Mutation>
