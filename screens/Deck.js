@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Text, Button, ScrollView, View, Modal, TextInput } from 'react-native';
+import { Text, Button, ScrollView, View, TouchableHighlight, Image, Alert } from 'react-native';
 import { Mutation, Query, renderToStringWithData } from 'react-apollo';
 import gql from 'graphql-tag';
 import User from '../components/User';
+import styles from './Deck.style'
 
 const DECK_QUERY = gql`
   query Deck($slug: String!) {
@@ -48,12 +49,12 @@ const DELETE_CARD_MUTATION = gql`
 
 export class Deck extends Component {
 
-  static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({ navigation }) => {
     let button;
     if (navigation.getParam('dueCards') > 0) {
       button = <Button title="Review" onPress={() => {
-     navigation.navigate('Review', {slug: navigation.getParam('slug')})
-    }} />
+        navigation.navigate('Review', { slug: navigation.getParam('slug') })
+      }} />
     }
 
     return {
@@ -70,22 +71,23 @@ export class Deck extends Component {
   }
 
 
-  deleteCard = async(deleteCard, card) => {
-    await deleteCard({ variables: {id:  card.id} });
+  deleteCard = async (deleteCard, card) => {
+    Alert.alert('Delete Card', 'Are you sure you want to delete this card?',
+      [{ text: 'OK', onPress: () =>deleteCard({ variables: { id: card.id } }) }, { text: 'Cancel', onPress: () => console.log('Cancel pressed'), style: 'cancel' }]);
   }
 
-    render() {
-      const slug = this.props.navigation.getParam('slug');
+  render() {
+    const slug = this.props.navigation.getParam('slug');
 
-      return (
-        <User>
-          {({data}) => {
-            if (data && data.me) {
-              return <Query query={DECK_QUERY} variables={{ slug }}>
-              {( {data, loading, error, refetch} )  => {
-                
+    return (
+      <User>
+        {({ data }) => {
+          if (data && data.me) {
+            return <Query query={DECK_QUERY} variables={{ slug }}>
+              {({ data, loading, error, refetch }) => {
+
                 const { deck } = data;
-               
+
                 if (loading) {
                   return <Text>Loading Cards...</Text>
                 }
@@ -93,77 +95,72 @@ export class Deck extends Component {
                   return <Text>Sorry there was a problem loading your cards!</Text>
                 }
 
-                if(deck) {
+                if (deck) {
                   let reviewButton;
                   if (deck.cardsDue > 0) {
-                    reviewButton = <Button title="Start Review" onPress={() => this.props.navigation.navigate('Review', {slug: this.props.navigation.getParam('slug'), refetchParent: refetch})} />
+                    reviewButton = <TouchableHighlight style={styles.buttonSingle}><Button color='#1D366C' title="Start Review" onPress={() => this.props.navigation.navigate('Review', { slug: this.props.navigation.getParam('slug'), refetchParent: refetch })} /></TouchableHighlight>
                   }
-                
-                return <ScrollView>
-                  <Text>Total: {deck.cardsTotal}</Text><Text>Due: {deck.cardsDue}</Text>
-                  <Text>
-                  {deck.name}
-                  </Text>
 
-                  <ScrollView>
-                 
-                  <Button title="Add New Note" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, reloadComponent: this.reloadComponent, refetchParent: refetch})}/>
+                  return <ScrollView style={styles.container}>
+                    <Text style={styles.total}>Total: {deck.cardsTotal}</Text>
+                    <Text style={styles.total}>Due: {deck.cardsDue}</Text>
 
-                  {reviewButton}
-                   
-                  <Query query={DUE_CARDS_QUERY} variables={{ deckSlug: slug, when: new Date().setFullYear(new Date().getFullYear() + 1)}}>
-                    {({ data, error, loading, refetch }) => {
-                      if (loading) {
-                        refetch()
-                        return <Text>Loading...</Text>
-                      }
-                      if (error) {
-                        return <Text>Error! {error.message}</Text>;
-                      }
-                      const { allCards } = data;
+                    <View style={styles.buttonsContainer}>
+                      <TouchableHighlight style={styles.buttonSingle}>
+                        <Button color='#1D366C' title="Add New Note" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, reloadComponent: this.reloadComponent, refetchParent: refetch })} />
+                      </TouchableHighlight>
+                      {reviewButton}
+                    </View>
 
-                      const cards = allCards.map((card) => {
-                         
-                        return <Mutation mutation={DELETE_CARD_MUTATION} refetchQueries={['Deck']} key={card.id}>
-                          {(deleteCard) => {
-                            return <Text key={card.id} onPress={() => this.deleteCard(deleteCard, card)} style={{margin: 10, width: 100, height: 100, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>
-                              {card.fields[0].value}
-                              </Text>
-                            }}
-                          </Mutation>
-                      })
 
-                      return cards;
-
-                        {/* if (!this.state.toggleCardBack) {
-                          return <Text onPress={this.cardFlip} key={note.id} style={{margin: 10, width: 100, height: 100, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>{note.fields[0].value}</Text>;
-                        } else {
-                          return <Text onPress={this.cardFlip} key={note.id} style={{margin: 10, width: 100, height: 100, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>{note.fields[1].value}</Text>;
+                    <Query query={DUE_CARDS_QUERY} variables={{ deckSlug: slug, when: new Date().setFullYear(new Date().getFullYear() + 1) }}>
+                      {({ data, error, loading, refetch }) => {
+                        if (loading) {
+                          refetch()
+                          return <Text>Loading...</Text>
                         }
-                      });
+                        if (error) {
+                          return <Text>Error! {error.message}</Text>;
+                        }
+                        else {
 
-                      return cards; */}
+                          const { allCards } = data;
+                          const cards = allCards.map((card) => {
+                            return <Mutation mutation={DELETE_CARD_MUTATION} refetchQueries={['Deck']} key={card.id}>
+                              {(deleteCard) => {
+                                return <View style={styles.card}>
+                                  <Text key={card.id} >
+                                    {card.fields[0].value.length > 5 ? card.fields[0].value.slice(0, 10) + '...' : card.fields[0].value}
+                                  </Text>
+                                  <TouchableHighlight onPress={() => this.deleteCard(deleteCard, card)}>
+                                    <Image source={require('../assets/trash.png')} style={styles.trashIcon} key={card.id} />
+                                  </TouchableHighlight>
+                                </View>
+                              }}
+                            </Mutation>
+                          })
 
-                    
-                    }}
-                  </Query>
+                          return <View style={styles.cardsContainer}>{cards}</View>
+
+                        }
+                      }}
+                    </Query>
+
 
                   </ScrollView>
-
-                </ScrollView>
                 } else {
                   return <Text>Loading Cards...</Text>
                 }
 
               }
               }
-              </Query>
-            } else {
-              return <Text>Loading Cards...</Text>
-            }
-          }}
-        </User>
-      )
-    }
+            </Query>
+          } else {
+            return <Text>Loading Cards...</Text>
+          }
+        }}
+      </User>
+    )
+  }
 
 }

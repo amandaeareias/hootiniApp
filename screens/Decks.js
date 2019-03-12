@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Text, Button, View, Modal, TextInput, Alert } from 'react-native';
+import { Text, Button, View, Modal, TextInput, Alert, TouchableHighlight, ScrollView } from 'react-native';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import User from '../components/User'
 import DeckList from '../components/DeckList'
-
+import decksStyle from './Decks.style'
+import styles from './Decks.style';
 
 const SIGNOUT_MUTATION = gql`
   mutation signout {
@@ -61,7 +62,9 @@ export default class Decks extends Component {
     return {
       title: 'My Decks',
       headerRight: <Mutation mutation={SIGNOUT_MUTATION}>{(signout, { client }) => (
-        <Button title="Log out" onPress={() => {
+        <Button title="Log out"
+          color='#1D366C'
+          onPress={() => {
           handleClick(signout, client);
           navigation.navigate('Home')
         }} />
@@ -75,31 +78,36 @@ export default class Decks extends Component {
   };
 
   selectDeck = (id, deleteDeck) => {
-    Alert.alert('Delete Deck', 'Are you sure you want to delete this deck? All cards will be deleted', 
-    [ { text: 'OK', onPress: () =>  deleteDeck({ variables: {id: id}})}, { text: 'Cancel', onPress: () => console.log('Cancel pressed'), style: 'cancel'}]);
+    Alert.alert('Delete Deck', 'Are you sure you want to delete this deck? All cards will be deleted',
+      [{ text: 'OK', onPress: () => deleteDeck({ variables: { id: id } }) }, { text: 'Cancel', onPress: () => console.log('Cancel pressed'), style: 'cancel' }]);
   }
 
   render() {
     return (
-      <View>
-
-        
-
-        <Button onPress={this.toggleDialog} title="Create Deck" />
+      <ScrollView>
+        <TouchableHighlight style={styles.createDeck}>
+          <Button onPress={this.toggleDialog} title="Create" color='#1D366C' />
+        </TouchableHighlight>
 
         <Modal visible={this.state.dialogOpen}
           onRequestClose={this.toggleDialog}
           transparent={true}
           animationType="slide"
         >
-          <View style={{ height: 180, width: 250, margin: 50, padding: 15, backgroundColor: 'green' }}>
-            <Text onPress={this.toggleDialog}>X</Text>
-            <TextInput onChangeText={(newDeckName) => this.setState({ newDeckName })} value={this.state.newDeckName} placeholder="New Deck Name" style={{ height: 40 }} />
-            <Mutation mutation={CREATE_DECK_MUTATION} refetchQueries={['allDecks']}>
-              {(createDeck, { loading, error }) => (
-                <Button onPress={() => this.handleSubmit(createDeck)} title='Save' />
-              )}
-            </Mutation>
+          <View style={styles.modalView}>
+            <TextInput style={styles.modalInput} onChangeText={(newDeckName) => this.setState({ newDeckName })} value={this.state.newDeckName} placeholder="Deck Name" />
+            <View style={styles.modalButtons}>
+              <TouchableHighlight style={styles.modalButton}>
+                <Button style={styles.modalButton} onPress={this.toggleDialog} title='Close' color='#1D366C' />
+              </TouchableHighlight>
+              <Mutation mutation={CREATE_DECK_MUTATION} refetchQueries={['allDecks']}>
+                {(createDeck, { loading, error }) => (
+                  <TouchableHighlight style={styles.modalButton}>
+                    <Button style={styles.modalButton} onPress={() => this.handleSubmit(createDeck)} title='Save' color='#1D366C' />
+                  </TouchableHighlight>
+                )}
+              </Mutation>
+            </View>
           </View>
         </Modal>
 
@@ -114,10 +122,10 @@ export default class Decks extends Component {
                     console.log('you have decks')
                     return <Mutation mutation={DELETE_DECK_MUTATION} refetchQueries={['allDecks']}>
                       {(deleteDeck) => (
-                        <DeckList decks={data.allDecks} deleteDeck={deleteDeck} selectDeck={this.selectDeck} navigate={this.props.navigation.navigate}/>
+                        <DeckList decks={data.allDecks} deleteDeck={deleteDeck} selectDeck={this.selectDeck} navigate={this.props.navigation.navigate} />
                       )}
-                      
-                      </Mutation>
+
+                    </Mutation>
                   } else {
                     console.log('you have no decks')
                     return <Text> Start your first deck! </Text>
@@ -129,7 +137,7 @@ export default class Decks extends Component {
             }
           }}
         </User>
-      </View>
+      </ScrollView>
     )
   }
 }
