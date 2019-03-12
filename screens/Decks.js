@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Button, View, Modal, TextInput } from 'react-native';
+import { Text, Button, View, Modal, TextInput, Alert } from 'react-native';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import User from '../components/User'
@@ -17,6 +17,7 @@ const SIGNOUT_MUTATION = gql`
 const ALL_DECKS_QUERY = gql`
   query allDecks {
     allDecks {
+      id
       slug
       name
       cardsTotal
@@ -29,6 +30,15 @@ const CREATE_DECK_MUTATION = gql`
   mutation createDeck($name: String!) {
     createDeck(data: { name: $name }) {
       slug
+    }
+  }
+`;
+
+
+const DELETE_DECK_MUTATION = gql`
+  mutation deleteDeck($id: ID!) {
+    deleteDeck(data: { id: $id }) {
+      id
     }
   }
 `;
@@ -60,15 +70,21 @@ export default class Decks extends Component {
   };
 
   handleSubmit = async (createDeck) => {
-    console.log('name of hte deck', this.state.newDeckName)
     this.setState({ dialogOpen: !this.state.dialogOpen }, () => console.log('submit handled'));
-
     await createDeck({ variables: { name: this.state.newDeckName } }).then(data => console.log('promise data: ', data));
   };
+
+  selectDeck = (id, deleteDeck) => {
+    Alert.alert('Delete Deck', 'Are you sure you want to delete this deck? All cards will be deleted', 
+    [ { text: 'OK', onPress: () =>  deleteDeck({ variables: {id: id}})}, { text: 'Cancel', onPress: () => console.log('Cancel pressed'), style: 'cancel'}]);
+  }
 
   render() {
     return (
       <View>
+
+        
+
         <Button onPress={this.toggleDialog} title="Create Deck" />
 
         <Modal visible={this.state.dialogOpen}
@@ -96,7 +112,12 @@ export default class Decks extends Component {
                 {({ data }) => {
                   if (data.allDecks && data.allDecks.length > 0) {
                     console.log('you have decks')
-                    return <DeckList decks={data.allDecks} navigate={this.props.navigation.navigate}/>
+                    return <Mutation mutation={DELETE_DECK_MUTATION} refetchQueries={['allDecks']}>
+                      {(deleteDeck) => (
+                        <DeckList decks={data.allDecks} deleteDeck={deleteDeck} selectDeck={this.selectDeck} navigate={this.props.navigation.navigate}/>
+                      )}
+                      
+                      </Mutation>
                   } else {
                     console.log('you have no decks')
                     return <Text> Start your first deck! </Text>

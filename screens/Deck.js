@@ -37,9 +37,9 @@ export const DUE_CARDS_QUERY = gql`
   }
 `;
 
-const DELETE_NOTE_MUTATION = gql`
-  mutation deleteNote($id: ID!) {
-    deleteNote(data: { id: $id }) {
+const DELETE_CARD_MUTATION = gql`
+  mutation deleteCard($id: ID!) {
+    deleteCard(data: { id: $id }) {
       id
     }
   }
@@ -65,29 +65,13 @@ export class Deck extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggleCardBack: false,
       dueCards: 0,
-      dummyState: 0
     }
   }
 
 
-  reloadComponent = () => {
-    this.setState({dummyState: this.state.dummyState + 1}, () => console.log(this.state.dummyState))
-    // this.props.navigation.setParams({ dueCards: 0 });
-    // this.props.navigation.setParams({ dueCards: this.state.dueCards });
-  }
-
-  cardFlip = () => {
-    this.setState({toggleCardBack: !this.state.toggleCardBack}, () => console.log('card flipped'))
-    // problem - all cards are getting flipped at once. two ways to solve - only show front side, or change the value of each card clicked
-  }
-
-  deleteNote = async(deleteNote, note) => {
-    console.log('note to delete', note);
-    // await deleteNote({id: note.id, deck: note.deck})
-    await deleteNote({ variables: {id:  "5c83e3a19606589a9c7406bc"}})
-    console.log('note deleted');
+  deleteCard = async(deleteCard, card) => {
+    await deleteCard({ variables: {id:  card.id} });
   }
 
     render() {
@@ -96,13 +80,11 @@ export class Deck extends Component {
       return (
         <User>
           {({data}) => {
-            console.log(data);
             if (data && data.me) {
               return <Query query={DECK_QUERY} variables={{ slug }}>
               {( {data, loading, error, refetch} )  => {
                 
                 const { deck } = data;
-                console.log(data);
                
                 if (loading) {
                   return <Text>Loading Cards...</Text>
@@ -140,12 +122,12 @@ export class Deck extends Component {
                       }
                       const { allCards } = data;
 
-                      const cards = allCards.map((note) => {
+                      const cards = allCards.map((card) => {
                          
-                        return <Mutation mutation={DELETE_NOTE_MUTATION}>
-                          {(deleteNote) => {
-                            return <Text key={note.id} onPress={() => this.deleteNote(deleteNote, note)} style={{margin: 10, width: 100, height: 100, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>
-                              {note.fields[0].value}
+                        return <Mutation mutation={DELETE_CARD_MUTATION} refetchQueries={['Deck']} key={card.id}>
+                          {(deleteCard) => {
+                            return <Text key={card.id} onPress={() => this.deleteCard(deleteCard, card)} style={{margin: 10, width: 100, height: 100, fontSize: 10, padding: 10, backgroundColor: '#DEDEDE'}}>
+                              {card.fields[0].value}
                               </Text>
                             }}
                           </Mutation>

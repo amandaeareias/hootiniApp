@@ -6,8 +6,8 @@ import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 
 const client = new ApolloClient({
-  uri: 'http://192.168.1.166:3001/graphql',
-  // uri: 'http://192.168.1.231:3001/graphql',
+  uri: 'http://192.168.1.166:3001/graphql', // sue
+  // uri: 'http://192.168.1.231:3001/graphql', amanda
   credentials: 'include',
 });
 client.defaultOptions = {

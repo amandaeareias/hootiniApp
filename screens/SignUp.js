@@ -31,10 +31,6 @@ const User = props => (
 
 export default class SignUp extends React.Component {
 
-  handleSubmit = (formData) => {
-    console.log(formData.name, formData.email, formData.password);
-  };
-
   static navigationOptions = ({navigation}) => {
     return {
       title: 'Sign Up',
@@ -55,7 +51,6 @@ export default class SignUp extends React.Component {
     return (
       <User>
       {({ data }) => { if (data && data.me) {
-        console.log('hello data works');
         this.props.navigation.navigate('Decks');
       }
       return <Mutation mutation={SIGNUP_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
