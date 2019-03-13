@@ -15,8 +15,12 @@ export default class Review extends Component {
   }
 
   render() {
+    const slug = this.props.navigation.state.params.slug;
     
-    const slug = this.props.navigation.state.params.slug
+    let alltheCards = [];
+    if (this.props.navigation.state.params.allCards) {
+      alltheCards = this.props.navigation.state.params.allCards;
+    }
     return (
       <User>
         {({ data, error, loading }) => {
@@ -36,7 +40,13 @@ export default class Review extends Component {
               }
               const { allCards } = data;
 
-              return <Card cards={allCards} slug={slug} refetchParent={this.props.navigation.state.params.refetchParent} navigation={this.props.navigation}></Card>
+            
+              if (allCards.length) {
+                return <Card duecards={allCards} slug={slug} refetchParent={this.props.navigation.state.params.refetchParent} navigation={this.props.navigation}></Card>
+              } else {
+                return <Card duecards ={alltheCards} slug={slug} refetchParent={this.props.navigation.state.params.refetchParent} navigation={this.props.navigation}></Card>
+              }
+
             }}
           </Query>
         }}

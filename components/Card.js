@@ -20,7 +20,7 @@ export default class Card extends Component {
     timeboxStart: Date.now(),
     currentCard: 0,
     isAnswerShown: false,
-    cards: this.props.cards,
+    duecards: this.props.duecards,
     isReviewOver: false
   };
 
@@ -30,9 +30,9 @@ export default class Card extends Component {
 
   nextCard = async ({reviewCard, title}) => {
 
-    await reviewCard({ variables: { id: this.state.cards[this.state.currentCard].id, answer: title } });
+    await reviewCard({ variables: { id: this.state.duecards[this.state.currentCard].id, answer: title } });
 
-    if (this.state.currentCard !== this.state.cards.length - 1) {
+    if (this.state.currentCard !== this.state.duecards.length - 1) {
       this.setState({
         currentCard: this.state.currentCard + 1,
         isAnswerShown: false,
@@ -66,9 +66,10 @@ export default class Card extends Component {
   }
 
   render() {
-    const cards = this.props.cards
-    const front = cards[this.state.currentCard].fields[0].value
-    const back = cards[this.state.currentCard].fields[1].value
+  
+    const duecards = this.props.duecards
+    const front = duecards[this.state.currentCard].fields[0].value
+    const back = duecards[this.state.currentCard].fields[1].value
     let cardView;
 
     if (!this.state.isAnswerShown) {

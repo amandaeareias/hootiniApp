@@ -40,13 +40,16 @@ export default styles = StyleSheet.create({
   },
   card: {
     display: 'flex',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     margin: 10,
-    width: 100,
-    height: 70,
-    fontSize: 10,
+    width: 150,
+    height: 100,
+    fontSize: 16,
     padding: 5,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
     backgroundColor: 'white',
     borderRadius: 5,
     shadowColor: 'black',
@@ -63,7 +66,10 @@ export default styles = StyleSheet.create({
     fontSize: 17,
   },
   trashIcon: {
-    height: 15,
-    width: 14
+    height: 20,
+    width: 20,
+    position: 'absolute',
+    right: -60,
+    bottom: 5
   }
 })

@@ -58,11 +58,13 @@ export class Deck extends Component {
     super(props);
     this.state = {
       dueCards: 0,
-      dummyState: 0
+      dummyState: 0,
+      
     }
 
     this.refetchDeck = () => {};
     this.refetchDueCards = () => {};
+    this.allCards = () => {};
     
   }
 
@@ -76,6 +78,10 @@ export class Deck extends Component {
     this.refetchDueCards();
   }
 
+  fetchallCards = () => {
+    this.allCards();
+  }
+
   render() {
     const slug = this.props.navigation.getParam('slug');
 
@@ -85,15 +91,17 @@ export class Deck extends Component {
           if (data && data.me) {
             
             return <Query query={DECK_QUERY} variables={{ slug }}>
-              {({ data, loading, error, refetch }) => {
+              {({ data, error, refetch }) => {
                 this.refetchDeck = refetch;
                 const { deck } = data;
-                if (loading) { return <Text>Loading Cards...</Text>}
                 if (error) {  return <Text>Sorry there was a problem loading your cards!</Text> }
                 if (deck) {
                   let reviewButton;
                   if (deck.cardsDue > 0) {
                     reviewButton = <TouchableHighlight style={styles.buttonSingle}><Button color='white' title="Start Review" onPress={() => this.props.navigation.navigate('Review', { slug: this.props.navigation.getParam('slug'), refetchParent: this.refetchData })} /></TouchableHighlight>
+                  } else {
+                    
+                    reviewButton = <TouchableHighlight style={styles.buttonSingle}><Button color='white' title="Review again" onPress={() => this.props.navigation.navigate('Review', { slug: this.props.navigation.getParam('slug'), refetchParent: this.refetchData, allCards: this.allCards })} /></TouchableHighlight>
                   }
 
                   return <ScrollView style={styles.container}>
@@ -116,12 +124,13 @@ export class Deck extends Component {
                           return <Text>Error! {error.message}</Text>;
                         } else {
                           const { allCards } = data;
+                          this.allCards = allCards;
                           const cards = allCards.map((card) => {
                             return <Mutation mutation={DELETE_CARD_MUTATION} refetchQueries={['Deck']} key={card.id}>
                               {(deleteCard) => {
                                 return <View style={styles.card}>
                                   <Text key={card.id} >
-                                    {card.fields[0].value.length > 5 ? card.fields[0].value.slice(0, 10) + '...' : card.fields[0].value}
+                                    {card.fields[0].value.length > 5 ? card.fields[0].value.slice(0, 40) + '...' : card.fields[0].value}
                                   </Text>
                                   <TouchableHighlight onPress={() => this.deleteCard(deleteCard, card)}>
                                     <Image source={require('../assets/trash.png')} style={styles.trashIcon} key={card.id} />
