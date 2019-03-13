@@ -5,7 +5,7 @@ export default styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'stretch',
     margin: 25,
   },
   TextInput: {
@@ -33,7 +33,8 @@ export default styles = StyleSheet.create({
   FormHeader: {
     fontSize: 24,
     color: 'black',
-    fontWeight: '800'
+    fontWeight: '800',
+    textAlign: 'center',
   },
   FormHeaderLabel: {
     alignSelf: 'center',

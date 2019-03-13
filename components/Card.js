@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Text, Button, ScrollView, Modal, TextInput, View } from 'react-native';
+import { Text, Button, TouchableHighlight, View } from 'react-native';
 import ReviewAnswerButtons from './ReviewAnswerButtons'
 import { Mutation, Query, renderToStringWithData } from 'react-apollo';
 import gql from 'graphql-tag';
 import User from '../components/User';
-
-
+import styles from '../screens/review.style.js';
 
 const REVIEW_CARD_MUTATION = gql`
   mutation reviewCard($id: ID!, $answer: ReviewAnswer!) {
@@ -54,9 +53,10 @@ export default class Card extends Component {
 
   showButton = () => {
     if (this.state.isReviewOver) {
-      return <Button onPress={this.back} title="Back to Deck" />
+      return <TouchableHighlight style={styles.reviewButton}>
+        <Button color="white" onPress={this.back} title="Back to Deck" />
+      </TouchableHighlight>
     } else {
-      // return <Button onPress={this.nextCard} title="Next" />
       return <Mutation mutation={REVIEW_CARD_MUTATION}>
         {(reviewCard) => (
           <ReviewAnswerButtons nextCard={(title) => this.nextCard({reviewCard, title})} />
@@ -72,14 +72,18 @@ export default class Card extends Component {
     let cardView;
 
     if (!this.state.isAnswerShown) {
-      cardView = <View>
-        <Text>FRONT: {front}</Text>
-        <Button title='Show answer' onPress={this.showAnswer} />
+      cardView = 
+      <View style={styles.answerContainer}>
+        <Text style={styles.cardStyle}>FRONT: {"\n"}<Text style={styles.cardContent}>{front}</Text></Text>
+        <TouchableHighlight style={styles.reviewButton}>
+          <Button title='Show answer' color="white" onPress={this.showAnswer} />
+        </TouchableHighlight>
       </View>
     } else {
-      cardView = <View>
-        <Text>FRONT: {front}</Text>
-        <Text>BACK: {back}</Text>
+      cardView = 
+      <View style={styles.answerContainer}>
+        <Text style={styles.cardStyle}>FRONT: {"\n"}<Text style={styles.cardContent}>{front}</Text></Text>
+        <Text style={styles.cardStyle} >BACK: {"\n"}<Text style={styles.cardContent}>{back}</Text></Text>
         <View>{this.showButton()}</View>
       </View>
     }

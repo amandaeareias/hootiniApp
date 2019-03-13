@@ -57,7 +57,7 @@ class AddNote extends Component {
     return (
       <View>
 
-        <Mutation mutation={CREATE_NOTE_MUTATION} fetchPolicy="no-cache">
+        <Mutation mutation={CREATE_NOTE_MUTATION}>
 
           {(createNote) => {
             return <View style={styles.container}>

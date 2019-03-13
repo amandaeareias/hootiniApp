@@ -25,7 +25,5 @@ export default styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     borderRadius: 30,
-    color: 'white',
-    fontWeight: 'bold'
   }
 });

@@ -67,9 +67,9 @@ export class Deck extends Component {
     super(props);
     this.state = {
       dueCards: 0,
+      dummyState: 0
     }
   }
-
 
   deleteCard = async (deleteCard, card) => {
     Alert.alert('Delete Card', 'Are you sure you want to delete this card?',
@@ -83,47 +83,38 @@ export class Deck extends Component {
       <User>
         {({ data }) => {
           if (data && data.me) {
+            
             return <Query query={DECK_QUERY} variables={{ slug }}>
               {({ data, loading, error, refetch }) => {
-
                 const { deck } = data;
-
-                if (loading) {
-                  return <Text>Loading Cards...</Text>
-                }
-                if (error) {
-                  return <Text>Sorry there was a problem loading your cards!</Text>
-                }
-
+                if (loading) { return <Text>Loading Cards...</Text>}
+                if (error) {  return <Text>Sorry there was a problem loading your cards!</Text> }
                 if (deck) {
                   let reviewButton;
                   if (deck.cardsDue > 0) {
-                    reviewButton = <TouchableHighlight style={styles.buttonSingle}><Button color='#1D366C' title="Start Review" onPress={() => this.props.navigation.navigate('Review', { slug: this.props.navigation.getParam('slug'), refetchParent: refetch })} /></TouchableHighlight>
+                    reviewButton = <TouchableHighlight style={styles.buttonSingle}><Button color='white' title="Start Review" onPress={() => this.props.navigation.navigate('Review', { slug: this.props.navigation.getParam('slug'), refetchParent: refetch })} /></TouchableHighlight>
                   }
 
                   return <ScrollView style={styles.container}>
-                    <Text style={styles.total}>Total: {deck.cardsTotal}</Text>
-                    <Text style={styles.total}>Due: {deck.cardsDue}</Text>
+                    <Text style={styles.total}>Total: {deck.cardsTotal} | Due: {deck.cardsDue}</Text>
 
                     <View style={styles.buttonsContainer}>
-                      <TouchableHighlight style={styles.buttonSingle}>
-                        <Button color='#1D366C' title="Add New Note" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, reloadComponent: this.reloadComponent, refetchParent: refetch })} />
-                      </TouchableHighlight>
+                      <View style={styles.buttonAdd}>
+                        <Image source={require('../assets/add.png')} style={{width: 25, height: 25}}/>
+                        <Button color='#1D366C' title="Add Note" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, refetchParent: refetch})} />
+                      </View>
                       {reviewButton}
                     </View>
-
 
                     <Query query={DUE_CARDS_QUERY} variables={{ deckSlug: slug, when: new Date().setFullYear(new Date().getFullYear() + 1) }}>
                       {({ data, error, loading, refetch }) => {
                         if (loading) {
-                          refetch()
+                          refetch();
                           return <Text>Loading...</Text>
                         }
                         if (error) {
                           return <Text>Error! {error.message}</Text>;
-                        }
-                        else {
-
+                        } else {
                           const { allCards } = data;
                           const cards = allCards.map((card) => {
                             return <Mutation mutation={DELETE_CARD_MUTATION} refetchQueries={['Deck']} key={card.id}>

@@ -2,10 +2,20 @@ import { AppRegistry, StyleSheet, Text, View } from 'react-native';
 
 
 export default styles = StyleSheet.create({
-  createDeck: {
-    width: 100,
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  createButton: {
+    width: 150,
     margin: 10,
-    backgroundColor: '#F4F4F4'
+    marginTop: 20,
+    height: 50, 
+    backgroundColor: '#1D366C', 
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5  
   },
   modalView: {
     display: 'flex',
@@ -13,6 +23,7 @@ export default styles = StyleSheet.create({
     height: 150,
     width: 250,
     margin: 50,
+    marginTop: 150,
     padding: 15,
     backgroundColor: 'white',
     borderRadius: 5,
@@ -22,7 +33,7 @@ export default styles = StyleSheet.create({
       height: 10
     },
     shadowRadius: 10,
-    shadowOpacity: 1,
+    shadowOpacity: .2,
     elevation: 3
   },
   modalInput: {
@@ -37,7 +48,12 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  modalButton: {
+  modalButtonClose: {
     width: 105,
-  }
+  },
+  modalButtonSave: {
+    width: 105,
+    backgroundColor: '#1D366C',
+    borderRadius: 5
+  },
 })

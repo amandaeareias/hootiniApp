@@ -55,7 +55,7 @@ export default class Decks extends Component {
   }
 
   toggleDialog = () => {
-    this.setState({ dialogOpen: !this.state.dialogOpen }, () => console.log('dialog toggled!'));
+    this.setState({ dialogOpen: !this.state.dialogOpen, newDeckName: '' }, () => console.log('dialog toggled!'));
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -74,7 +74,7 @@ export default class Decks extends Component {
 
   handleSubmit = async (createDeck) => {
     this.setState({ dialogOpen: !this.state.dialogOpen }, () => console.log('submit handled'));
-    await createDeck({ variables: { name: this.state.newDeckName } }).then(data => console.log('promise data: ', data));
+    await createDeck({ variables: { name: this.state.newDeckName } }).then(()=> this.setState({newDeckName: ''}));
   };
 
   selectDeck = (id, deleteDeck) => {
@@ -84,9 +84,9 @@ export default class Decks extends Component {
 
   render() {
     return (
-      <ScrollView>
-        <TouchableHighlight style={styles.createDeck}>
-          <Button onPress={this.toggleDialog} title="Create" color='#1D366C' />
+      <ScrollView contentContainerStyle={styles.container}>
+        <TouchableHighlight style={styles.createButton}>
+          <Button color="white" onPress={this.toggleDialog} title="Add Deck" />
         </TouchableHighlight>
 
         <Modal visible={this.state.dialogOpen}
@@ -97,13 +97,13 @@ export default class Decks extends Component {
           <View style={styles.modalView}>
             <TextInput style={styles.modalInput} onChangeText={(newDeckName) => this.setState({ newDeckName })} value={this.state.newDeckName} placeholder="Deck Name" />
             <View style={styles.modalButtons}>
-              <TouchableHighlight style={styles.modalButton}>
-                <Button style={styles.modalButton} onPress={this.toggleDialog} title='Close' color='#1D366C' />
+              <TouchableHighlight style={styles.modalButtonClose}>
+                <Button onPress={this.toggleDialog} title='Close' color='#1D366C' />
               </TouchableHighlight>
               <Mutation mutation={CREATE_DECK_MUTATION} refetchQueries={['allDecks']}>
                 {(createDeck, { loading, error }) => (
-                  <TouchableHighlight style={styles.modalButton}>
-                    <Button style={styles.modalButton} onPress={() => this.handleSubmit(createDeck)} title='Save' color='#1D366C' />
+                  <TouchableHighlight style={styles.modalButtonSave}>
+                    <Button color="white" onPress={() => this.handleSubmit(createDeck)} title='Save'/>
                   </TouchableHighlight>
                 )}
               </Mutation>
@@ -119,16 +119,13 @@ export default class Decks extends Component {
 
                 {({ data }) => {
                   if (data.allDecks && data.allDecks.length > 0) {
-                    console.log('you have decks')
                     return <Mutation mutation={DELETE_DECK_MUTATION} refetchQueries={['allDecks']}>
                       {(deleteDeck) => (
                         <DeckList decks={data.allDecks} deleteDeck={deleteDeck} selectDeck={this.selectDeck} navigate={this.props.navigation.navigate} />
                       )}
-
                     </Mutation>
                   } else {
-                    console.log('you have no decks')
-                    return <Text> Start your first deck! </Text>
+                    return <Text style={{fontSize: 22, marginTop: 15}}> Start your first deck! </Text>
                   }
                 }}
               </Query>

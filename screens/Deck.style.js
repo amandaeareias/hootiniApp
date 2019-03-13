@@ -15,9 +15,21 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 15
   },
+  buttonAdd: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
   buttonSingle: {
     width: 150,
-    margin: 5
+    margin: 5,
+    backgroundColor: '#1D366C',
+    height: 40, 
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5
   },
   cardsContainer: {
     display: 'flex',
@@ -30,21 +42,22 @@ export default styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    margin: 5,
-    width: 90,
-    height: 60,
+    margin: 10,
+    width: 100,
+    height: 70,
     fontSize: 10,
     padding: 5,
-    // paddingTop: 13,
     backgroundColor: 'white',
     borderRadius: 5,
     shadowColor: 'black',
+    borderColor: '#e7e7e7',
+    borderWidth: .5,
     shadowOffset: {
-      width: 10,
-      height: 10
+      width: 3,
+      height: 3
     },
-    shadowRadius: 10,
-    shadowOpacity: 1,
+    shadowRadius: 1.5,
+    shadowOpacity: .1,
     elevation: 3,
     textAlign: 'center',
     fontSize: 17,
