@@ -46,20 +46,11 @@ const DELETE_CARD_MUTATION = gql`
   }
 `;
 
-
 export class Deck extends Component {
 
   static navigationOptions = ({ navigation }) => {
-    let button;
-    if (navigation.getParam('dueCards') > 0) {
-      button = <Button title="Review" onPress={() => {
-        navigation.navigate('Review', { slug: navigation.getParam('slug') })
-      }} />
-    }
-
     return {
-      title: navigation.getParam('slug', 'Slug'),
-      headerRight: button
+      title: navigation.getParam('name', 'My Deck'),
     }
   }
 
@@ -117,6 +108,7 @@ export class Deck extends Component {
                     </View>
 
                     <Query query={DUE_CARDS_QUERY} variables={{ deckSlug: slug, when: new Date().setFullYear(new Date().getFullYear() + 1) }}>
+
                       {({ data, error, loading, refetch }) => {
                         this.refetchDueCards = refetch;
                         if(!data.allCards) data.allCards = [];

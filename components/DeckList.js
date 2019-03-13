@@ -9,7 +9,7 @@ export default class DeckList extends React.Component {
       <ScrollView contentContainerStyle={styles.viewContainer}>
         {this.props.decks.map(deck =>
           <View style={styles.view} key={deck.id}>
-            <Text style={styles.text} slug={deck.slug} onPress={() => this.props.navigate('Deck', { slug: deck.slug })} key={deck.slug}>
+            <Text style={styles.text} slug={deck.slug} onPress={() => this.props.navigate('Deck', { slug: deck.slug, name: deck.name } )} key={deck.slug}>
               {deck.name}
             </Text>
             <TouchableHighlight onPress={() => this.props.selectDeck(deck.id, this.props.deleteDeck)}>

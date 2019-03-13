@@ -31,6 +31,7 @@ const CREATE_DECK_MUTATION = gql`
   mutation createDeck($name: String!) {
     createDeck(data: { name: $name }) {
       slug
+      name
     }
   }
 `;

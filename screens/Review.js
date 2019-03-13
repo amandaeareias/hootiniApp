@@ -15,7 +15,7 @@ export default class Review extends Component {
   }
 
   render() {
-    // const allCards = DUE_CARDS_QUERY.definitions[0].name.value
+    
     const slug = this.props.navigation.state.params.slug
     return (
       <User>
