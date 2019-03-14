@@ -10,7 +10,7 @@ export default class Review extends Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.state.params.slug
+      title: navigation.state.params.name
     }
   }
 

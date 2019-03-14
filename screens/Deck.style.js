@@ -18,14 +18,16 @@ export default styles = StyleSheet.create({
   buttonAdd: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 150,
+    height: 60,
   },
   buttonSingle: {
     width: 150,
     margin: 5,
     backgroundColor: '#1D366C',
-    height: 40, 
+    height: 50, 
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

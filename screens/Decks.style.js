@@ -46,14 +46,22 @@ export default styles = StyleSheet.create({
   modalButtons: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   modalButtonClose: {
     width: 105,
+    height: 50,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   modalButtonSave: {
     width: 105,
+    height: 50,
     backgroundColor: '#1D366C',
-    borderRadius: 5
+    borderRadius: 5,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 })

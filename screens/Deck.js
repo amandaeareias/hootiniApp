@@ -98,20 +98,25 @@ export class Deck extends Component {
                 if (deck) {
                   let reviewButton;
                   if (deck.cardsDue > 0) {
-                    reviewButton = <TouchableHighlight style={styles.buttonSingle}><Button color='white' title="Start Review" onPress={() => this.props.navigation.navigate('Review', { slug: this.props.navigation.getParam('slug'), refetchParent: this.refetchData })} /></TouchableHighlight>
+                    reviewButton = <TouchableHighlight style={styles.buttonSingle}><Button color='white' title="Start Review" onPress={() => this.props.navigation.navigate('Review', { slug: this.props.navigation.getParam('slug'), name: this.props.navigation.getParam('name'), refetchParent: this.refetchData })} /></TouchableHighlight>
                   } else {
-                    
-                    reviewButton = <TouchableHighlight style={styles.buttonSingle}><Button color='white' title="Review again" onPress={() => this.props.navigation.navigate('Review', { slug: this.props.navigation.getParam('slug'), refetchParent: this.refetchData, allCards: this.allCards })} /></TouchableHighlight>
+                    if (deck.cardsTotal === 0) {
+                      reviewButton = <Text></Text>
+                    } else {
+                      reviewButton = <TouchableHighlight style={styles.buttonSingle}><Button color='white' title="Review again" onPress={() => this.props.navigation.navigate('Review', { slug: this.props.navigation.getParam('slug'), name: this.props.navigation.getParam('name'), refetchParent: this.refetchData, allCards: this.allCards })} /></TouchableHighlight>
+                    }
                   }
 
                   return <ScrollView style={styles.container}>
                     <Text style={styles.total}>Total: {deck.cardsTotal} | Due: {deck.cardsDue}</Text>
 
                     <View style={styles.buttonsContainer}>
-                      <View style={styles.buttonAdd}>
-                        <Image source={require('../assets/add.png')} style={{width: 25, height: 25}}/>
-                        <Button color='#1D366C' title="Add Note" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, refetchParent: this.refetchData})} />
-                      </View>
+                      <TouchableHighlight onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, refetchParent: this.refetchData})}>
+                        <View style={styles.buttonAdd}>
+                          <Image source={require('../assets/add.png')} style={{width: 25, height: 25}}/>
+                          <Text style={{fontSize: 18, marginLeft: 10, color: '#1D366C'}}>Add Note</Text>
+                        </View>
+                      </TouchableHighlight>
                       {reviewButton}
                     </View>
 
@@ -130,7 +135,7 @@ export class Deck extends Component {
                               {(deleteCard) => {
                                 return <View style={styles.card}>
                                   <Text key={card.id} >
-                                    {card.fields[0].value.length > 5 ? card.fields[0].value.slice(0, 40) + '...' : card.fields[0].value}
+                                    {card.fields[0].value.length > 40 ? card.fields[0].value.slice(0, 40) + '...' : card.fields[0].value}
                                   </Text>
                                   <TouchableHighlight onPress={() => this.deleteCard(deleteCard, card)}>
                                     <Image source={require('../assets/trash.png')} style={styles.trashIcon} key={card.id} />

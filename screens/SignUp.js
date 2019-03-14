@@ -48,6 +48,10 @@ export default class SignUp extends React.Component {
     }
   }
 
+  submitSignUp = (signup) => {
+    return signup({variables: this.state}).then(()=> this.setState({name: '', email: '', password: ''}))
+  }
+
   render() {
     return (
       <User>
@@ -62,7 +66,7 @@ export default class SignUp extends React.Component {
           <TextInput style={styles.TextInput} secureTextEntry={true} onChangeText={(password) => this.setState({password})} value={this.state.password} placeholder="Password" />
           
           <TouchableHighlight style={styles.ButtonStyle}>
-            <Button title="Sign Up" color="white" onPress={() => signup({variables: this.state})}>Sign Up</Button>
+            <Button title="Sign Up" color="white" onPress={() => this.submitSignUp(signup)}>Sign Up</Button>
           </TouchableHighlight>
 
         </View>
