@@ -1,4 +1,10 @@
-![logo](https://drive.google.com/uc?export=view&id=1w9VkOxl5tGkjmSPg-2suiv5UPYTxDWFg) # Hootini App
+<h1>
+  <a href="https://hootini.com">
+    <img src="https://user-images.githubusercontent.com/27681148/47261359-d57e2b80-d4cd-11e8-841a-b9352bfce657.png" alt="Hootini" height=28>
+  </a>
+  &nbsp;Hootini App&nbsp;
+</h1>
+
 Flashcard learning application with a flexible templating engine.
 
 
@@ -17,4 +23,3 @@ What sets Hootini apart from other spaced repetition applications is its underst
 
 ## Showcase
 ![AppMockUp](https://drive.google.com/uc?export=view&id=12oIdZ2H7ETeKdrRsBPUB7c5fmLFrrzxC)
-![AppVideo](https://drive.google.com/uc?export=view&id=1iogoMVQ_4QnO9_PCq8uKAto8LIJhJUe5)
