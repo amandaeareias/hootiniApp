@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, Button, ScrollView, View, TouchableHighlight, Image, Alert } from 'react-native';
-import { Mutation, Query, renderToStringWithData } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import User from '../components/User';
 import styles from './Deck.style'
@@ -59,13 +59,10 @@ export class Deck extends Component {
     this.state = {
       dueCards: 0,
       dummyState: 0,
-      
     }
-
     this.refetchDeck = () => {};
     this.refetchDueCards = () => {};
     this.allCards = () => {};
-    
   }
 
   deleteCard = async (deleteCard, card) => {
@@ -89,7 +86,6 @@ export class Deck extends Component {
       <User>
         {({ data }) => {
           if (data && data.me) {
-            
             return <Query query={DECK_QUERY} variables={{ slug }}>
               {({ data, error, refetch }) => {
                 this.refetchDeck = refetch;
@@ -109,9 +105,8 @@ export class Deck extends Component {
 
                   return <ScrollView style={styles.container}>
                     <Text style={styles.total}>Total: {deck.cardsTotal} | Due: {deck.cardsDue}</Text>
-
                     <View style={styles.buttonsContainer}>
-                      <TouchableHighlight onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, refetchParent: this.refetchData})}>
+                      <TouchableHighlight underlayColor="white" onPress={() => this.props.navigation.navigate('AddNote', { deck: deck, refetchParent: this.refetchData})}>
                         <View style={styles.buttonAdd}>
                           <Image source={require('../assets/add.png')} style={{width: 25, height: 25}}/>
                           <Text style={{fontSize: 18, marginLeft: 10, color: '#1D366C'}}>Add Note</Text>
@@ -121,7 +116,6 @@ export class Deck extends Component {
                     </View>
 
                     <Query query={DUE_CARDS_QUERY} variables={{ deckSlug: slug, when: new Date().setFullYear(new Date().getFullYear() + 1) }}>
-
                       {({ data, error, loading, refetch }) => {
                         this.refetchDueCards = refetch;
                         if(!data.allCards) data.allCards = [];
@@ -144,19 +138,14 @@ export class Deck extends Component {
                               }}
                             </Mutation>
                           })
-
                           return <View style={styles.cardsContainer}>{cards}</View>
-
                         }
                       }}
                     </Query>
-
-
                   </ScrollView>
                 } else {
                   return <Text>Loading Cards...</Text>
                 }
-
               }
               }
             </Query>
@@ -167,5 +156,4 @@ export class Deck extends Component {
       </User>
     )
   }
-
 }

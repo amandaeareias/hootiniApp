@@ -4,7 +4,6 @@ import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import User from '../components/User'
 import DeckList from '../components/DeckList'
-import decksStyle from './Decks.style'
 import styles from './Decks.style';
 
 const SIGNOUT_MUTATION = gql`
@@ -35,7 +34,6 @@ const CREATE_DECK_MUTATION = gql`
     }
   }
 `;
-
 
 const DELETE_DECK_MUTATION = gql`
   mutation deleteDeck($id: ID!) {
@@ -114,7 +112,6 @@ export default class Decks extends Component {
 
         <User>
           {({ data }) => {
-
             if (data && data.me) {
               return <Query query={ALL_DECKS_QUERY}>
 

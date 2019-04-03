@@ -35,7 +35,6 @@ class ReviewAnswerButtons extends Component {
         <TouchableHighlight style={styles.EasyButtonStyle}>
           <Button title="EASY" onPress={() => this.handleClick("EASY")} color= "white"/>
         </TouchableHighlight>
-
       </View>
     );
   }

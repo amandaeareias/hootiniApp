@@ -1,6 +1,5 @@
 import { AppRegistry, StyleSheet, Text, View } from 'react-native';
 
-
 export default styles = StyleSheet.create({
   viewContainer: {
     marginTop: 15,

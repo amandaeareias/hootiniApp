@@ -55,29 +55,24 @@ export default class SignUp extends React.Component {
   render() {
     return (
       <User>
-      {({ data }) => { if (data && data.me) {
-        this.props.navigation.navigate('Decks');
-      }
-      return <Mutation mutation={SIGNUP_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
-        {(signup) => (
-        <View style={styles.container}>
-          <TextInput style={styles.TextInput} onChangeText={(name) => this.setState({name})} value={this.state.name} placeholder="Name" />
-          <TextInput style={styles.TextInput} onChangeText={(email) => this.setState({email})} value={this.state.email} placeholder="Email Address" />
-          <TextInput style={styles.TextInput} secureTextEntry={true} onChangeText={(password) => this.setState({password})} value={this.state.password} placeholder="Password" />
-          
-          <TouchableHighlight style={styles.ButtonStyle}>
-            <Button title="Sign Up" color="white" onPress={() => this.submitSignUp(signup)}>Sign Up</Button>
-          </TouchableHighlight>
+        {({ data }) => { if (data && data.me) {
+          this.props.navigation.navigate('Decks');
+        }
+        return <Mutation mutation={SIGNUP_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
+          {(signup) => (
+          <View style={styles.container}>
+            <TextInput style={styles.TextInput} onChangeText={(name) => this.setState({name})} value={this.state.name} placeholder="Name" />
+            <TextInput style={styles.TextInput} onChangeText={(email) => this.setState({email})} value={this.state.email} placeholder="Email Address" />
+            <TextInput style={styles.TextInput} secureTextEntry={true} onChangeText={(password) => this.setState({password})} value={this.state.password} placeholder="Password" />
+            <TouchableHighlight style={styles.ButtonStyle}>
+              <Button title="Sign Up" color="white" onPress={() => this.submitSignUp(signup)}>Sign Up</Button>
+            </TouchableHighlight>
+          </View>
 
-        </View>
+          )}
 
-        )}
-
-      </Mutation>
-
-      }}
-
-
+        </Mutation>
+        }}
       </User>
     )
   }

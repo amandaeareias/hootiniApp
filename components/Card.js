@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, Button, TouchableHighlight, View } from 'react-native';
 import ReviewAnswerButtons from './ReviewAnswerButtons'
-import { Mutation, Query, renderToStringWithData } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import User from '../components/User';
 import styles from '../screens/review.style.js';
@@ -29,9 +29,7 @@ export default class Card extends Component {
   }
 
   nextCard = async ({reviewCard, title}) => {
-
     await reviewCard({ variables: { id: this.state.duecards[this.state.currentCard].id, answer: title } });
-
     if (this.state.currentCard !== this.state.duecards.length - 1) {
       this.setState({
         currentCard: this.state.currentCard + 1,
@@ -42,8 +40,7 @@ export default class Card extends Component {
         isReviewOver: true
       })
     }
-
-    return
+    return;
   }
 
   back = () => {
@@ -66,7 +63,6 @@ export default class Card extends Component {
   }
 
   render() {
-  
     const duecards = this.props.duecards
     const front = duecards[this.state.currentCard].fields[0].value
     const back = duecards[this.state.currentCard].fields[1].value

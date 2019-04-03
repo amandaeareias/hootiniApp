@@ -84,6 +84,5 @@ const styles = StyleSheet.create({
   },
 });
 
-
 // This line
 // rootView.backgroundColor = "red";

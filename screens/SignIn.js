@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, Button, View, TouchableHighlight } from 'react-native';
 import gql from 'graphql-tag';
-import { Mutation, Query } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import User from '../components/User'
 import styles from './forms.style.js';
 
@@ -26,8 +26,6 @@ const SIGNIN_MUTATION = gql`
     }
   }
 `;
-
-
 
 export default class SignIn extends React.Component {
 

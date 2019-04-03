@@ -22,23 +22,10 @@ const SEARCH_NOTETYPES_QUERY = gql`
   }
 `;
 
-
 class AddNote extends Component {
 
   static navigationOptions = {
     title: 'Add Note'
-  }
-
-  handleSubmit = async (createNote, noteType) => {
-
-    const variables = {
-      fields: [{ key: 'Front', value: this.state.front }, { key: 'Back', value: this.state.back }],
-      noteType: noteType,
-      deck: this.state.deck
-    }
-    await createNote({ variables });
-    this.props.navigation.navigate('Deck', { deck: this.state.deck });
-    this.props.navigation.state.params.refetchParent();
   }
 
   constructor(props) {
@@ -50,22 +37,29 @@ class AddNote extends Component {
     }
   }
 
+  handleSubmit = async (createNote, noteType) => {
+    const variables = {
+      fields: [{ key: 'Front', value: this.state.front }, { key: 'Back', value: this.state.back }],
+      noteType: noteType,
+      deck: this.state.deck
+    }
+    await createNote({ variables });
+    this.props.navigation.navigate('Deck', { deck: this.state.deck });
+    this.props.navigation.state.params.refetchParent();
+  }
+
   render() {
     const deck = this.props.navigation.state.params.deck;
     return (
       <View>
-
         <Mutation mutation={CREATE_NOTE_MUTATION}>
-
           {(createNote) => {
             return <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.container}>
-              
               <Text style={styles.FormHeaderLabel}>Deck Name:</Text>
               <Text style={styles.FormHeader}>{deck.name}</Text>
               <Text style={styles.InputLabel}>Front</Text><TextInput  multiline={true} style={styles.NoteFormInput} onChangeText={(front) => this.setState({ front })} value={this.state.front} />
               <Text style={styles.InputLabel}>Back</Text><TextInput  multiline={true} style={styles.NoteFormInput} onChangeText={(back) => this.setState({ back })} value={this.state.back} />
-
               <Query query={SEARCH_NOTETYPES_QUERY} variables={{ name: "Basic" }}>
                 {({ loading, error, data: { allNoteTypes = [] } = {} }) => {
                   if (loading) {
@@ -78,11 +72,10 @@ class AddNote extends Component {
                 }}
               </Query>
             </View>
-                </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
 
           }}
         </Mutation>
-
       </View>
     )
   }
