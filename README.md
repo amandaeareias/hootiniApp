@@ -23,3 +23,27 @@ What sets Hootini apart from other spaced repetition applications is its underst
 
 ## Showcase
 ![AppMockUp](https://drive.google.com/uc?export=view&id=12oIdZ2H7ETeKdrRsBPUB7c5fmLFrrzxC)
+
+
+## Get started
+
+1. Clone the repository
+
+```sh
+> git clone https://github.com/amandaeareias/hootiniApp
+```
+
+2. Install dependencies
+
+```sh
+> npm install
+```
+
+3. Follow the [instructions](https://github.com/amandaeareias/hootini) to run the server
+
+4. Run the client 
+```sh
+> expo start
+```
+
+5. Install [Expo](https://expo.io/) in your IOS, open it and scan the QR code that will show up in your terminal
